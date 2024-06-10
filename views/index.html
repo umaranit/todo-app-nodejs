@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo List</title>
+</head>
+<style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    
+    h1 {
+      color: #333;
+    }
+    
+    form {
+      margin-bottom: 20px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    table, th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    
+    th {
+      background-color: #f2f2f2;
+    }
+    </style>
+<body>
+    <h1>Todo List</h1>
+
+    <form id="addTaskForm">
+        <label for="taskTitle">Task Title:</label><br>
+        <input type="text" id="taskTitle" name="taskTitle"><br>
+        <label for="taskDescription">Task Description:</label><br>
+        <input type="text" id="taskDescription" name="taskDescription"><br>
+        <label for="taskStatus">Task Status:</label><br>
+<input type="text" id="taskStatus" name="taskStatus"><br>
+        <input type="submit" value="Add Task">
+    </form>
+
+    <table id="taskTable">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th> <!-- Add this line -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Tasks will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+       $(document).ready(function() {
+  // Function to add a new task
+  $("#addTaskForm").submit(function(event) {
+    event.preventDefault();
+    var title = $("#taskTitle").val();
+    var description = $("#taskDescription").val();
+    var status = $("#taskStatus").val(); // Get the status from the form
+    var task = {
+      title: title,
+      description: description,
+      completed: false,
+      status: status // Include the status here
+    };
+    // Post the task to the server
+    $.post("/tasks", task, function() {
+      // Add the new task to the table
+      var row = "<tr><td>" + title + "</td><td>" + description + "</td><td>" + task.status + "</td></tr>";
+      $("#taskTable tbody").append(row);
+      // Clear the form
+      $("#taskTitle").val("");
+      $("#taskDescription").val("");
+      $("#taskStatus").val(""); // Clear the status field
+    });
+  });
+});
+    </script>
+</body>
+</html>

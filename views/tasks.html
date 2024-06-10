@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo List - Tasks</title>
+    <style>
+        .task {
+            margin-bottom: 10px;
+        }
+        .completed {
+            text-decoration: line-through;
+        }
+    </style>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+        }
+        
+        h1 {
+          color: #333;
+        }
+        
+        .task {
+          margin-bottom: 10px;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+        }
+        
+        .completed {
+          text-decoration: line-through;
+          color: #888;
+        }
+        </style>
+</head>
+<body>
+    <h1>Todo List - Tasks</h1>
+    <ul id="taskList">
+        <!-- Tasks will be dynamically added here -->
+    </ul>
+
+    <script>
+        // Fetch tasks from the server and populate the task list
+        fetch('/api/tasks')
+    .then(response => response.json())
+    .then(tasks => {
+        const taskList = document.getElementById('taskList');
+        tasks.forEach(task => {
+            const listItem = document.createElement('li');
+            listItem.classList.add('task');
+            if (task.completed) {
+                listItem.classList.add('completed');
+            }
+            listItem.textContent = task.title + ' - ' + task.status; // Include the status here
+            taskList.appendChild(listItem);
+        });
+    })
+    .catch(error => console.error(error));
+    </script>
+</body>
+</html>
